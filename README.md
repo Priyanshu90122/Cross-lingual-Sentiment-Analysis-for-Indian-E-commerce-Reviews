@@ -1,100 +1,55 @@
-# Cross-lingual-Sentiment-Analysis-for-Indian-E-commerce-Reviews
-# Overview
-This project explores sentiment analysis across Indian languages using cross-lingual NLP models.
-In the Indian e-commerce ecosystem, user reviews are often written in Hindi, Tamil, Telugu, Bengali, Marathi, and code-mixed Hinglish, which are not well supported by English-centric sentiment systems.
-The objective of this work is to understand how pretrained multilingual transformers behave on such data and how uncertainty can be handled in a practical, research-oriented manner.
-# Problem-Statement
-- Indian e-commerce platforms receive a large number of user reviews written in multiple Indian languages and code-mixed forms such as Hinglish.
-- Most existing sentiment analysis systems are English-centric and tend to classify opinions only as positive or negative, ignoring neutral or ambiguous feedback.
-- As a result, a significant portion of Indian customer sentiment is either misclassified or not properly utilized.
-# Motivation
-From manual inspection of e-commerce platforms, a large fraction of reviews:
-- Are written in non-English languages
-- Contain mixed scripts or informal expressions
-- Express weak or ambiguous sentiment rather than strong polarity
-- Most existing sentiment systems:
-- Collapse these cases into positive or negative labels
-- Fail to model uncertainty explicitly
-This project aims to study and address these issues using cross-lingual representations.
-# Dataset and Statistics
-- Dataset: Amazon Multilingual Reviews (HuggingFace)
-- Domain: E-commerce
-- Languages: English + multiple Indian languages
-- Sample Size Used: ~1,000 reviews per language (for analysis and testing)
+# Cross-lingual Sentiment Analysis for Indian E-commerce Reviews
+This project investigates zero-shot cross-lingual sentiment analysis for Indian e-commerce reviews using pretrained multilingual transformers. Indian user-generated content is inherently multilingual and code-mixed (e.g., Hindi, Tamil, Telugu, Bengali, Marathi, and Hinglish), posing challenges for sentiment models trained primarily on English data.
+The objective of this work is not to maximize accuracy, but to analyze cross-lingual transfer behavior, model uncertainty, and error patterns when applying a single multilingual model across diverse Indian languages without language-specific fine-tuning. The project is designed as a research-oriented study, focusing on model behavior, calibration, and limitations rather than application-level optimization.
 
-# Sentiment Label Distribution (approx.)
+# Problem Statement
+Indian e-commerce platforms receive large volumes of reviews written in multiple Indian languages and code-mixed forms such as Hinglish. Existing sentiment analysis systems are largely English-centric and often collapse ambiguous feedback into binary positive or negative labels.
 
-After mapping star ratings to sentiment labels:
-- Positive: ~55–60%
-- Neutral: ~15–20%
-- Negative: ~20–25%
+This leads to:
+- Poor handling of neutral or mixed sentiment
+-Systematic misclassification of code-mixed reviews
+- Lack of uncertainty awareness in predictions
 
-# Model
-- Architecture: XLM-RoBERTa (multilingual transformer)
-- Task: Sequence-level sentiment classification
-- Labels: Positive / Neutral / Negative
-- Training: No language-specific fine-tuning (zero-shot cross-lingual setup)
-The model is used as-is to focus on cross-lingual generalization rather than task-specific optimization.
+This project studies these challenges through a controlled zero-shot multilingual evaluation.
 
-# Methodology
-- Lightweight preprocessing
-Minimal cleaning is applied to avoid removing language-specific cues.
+# Methodology (Research Framing)
+-  Dataset: Amazon Multilingual Reviews (HuggingFace)
+- Languages: English, Hindi, Tamil, Telugu, Bengali, Marathi + synthetic Hinglish
+- Label Mapping:
+ - 1–2 stars → Negative
+ - 3 stars → Neutral
+ - 4–5 stars → Positive
 
-- Cross-lingual encoding
-Reviews are encoded using shared multilingual representations.
+- Model: XLM-RoBERTa (pretrained multilingual transformer)
+- Setup: Zero-shot inference (no supervised fine-tuning)
+- Inference: Softmax probabilities over sentiment classes
+- Uncertainty Handling: Confidence-based calibration, mapping low-confidence predictions to Neutral
+This setup isolates cross-lingual generalization effects from task-specific fine-tuning.
 
-- Sentiment inference
-Softmax probabilities are computed for each sentiment class.
-
-- Confidence-based calibration
-Predictions with low confidence are mapped to Neutral, instead of forcing polarity.
-
-# Quantitative Observations
-From empirical testing on multilingual and code-mixed inputs:
-
--Strongly polar reviews typically produce confidence scores > 0.70
+# Key Observation
+- Strongly polar reviews typically produce confidence scores > 0.70
 - Ambiguous or mixed-opinion reviews often fall below 0.55 confidence
-- Without calibration, neutral sentiment is frequently misclassified as positive or negative
-- Confidence-based handling improves interpretability, especially for Indian code-mixed text
-
-# Qualitative Analysis
-Examples such as:
-- “Product theek hai, price thoda zyada laga”
-- “Quality achhi hai but delivery disappoint kar gayi”
-
-show that:
-
-- Human perception is often neutral or mixed
-- Model confidence reflects this ambiguity
-Explicit uncertainty handling aligns model output closer to human judgment
-
+- Without calibration, neutral sentiment is frequently misclassified
+- Confidence-based handling improves interpretability for Indian and code-mixed textrvations
 # Limitations
- No supervised fine-tuning on Indian-language sentiment data
+- No supervised fine-tuning on Indian-language sentiment datasets
+- Sarcasm and implicit sentiment remain challenging 
+- Neutral detection relies on heuristic confidence thresholds
 
-- Sarcasm and implicit sentiment remain challenging
-
-- Neutral detection relies on a heuristic threshold
-These limitations are documented intentionally to maintain research transparency.
-
-# Future Work
-- More principled uncertainty modeling (entropy, margin-based methods)
-- Aspect-level sentiment analysis (price, delivery, quality)
-- Study of linguistic patterns in Hinglish and other code-mixed forms
+These limitations are explicitly acknowledged to maintain research transparency.
 
 # Why this matters for Multilingual NLP
-
 This project demonstrates:
-- Practical cross-lingual transfer learning
+- Practical cross-lingual transfer analysis
+- Challenges of low-resource and code-mixed text
+- Importance of uncertainty modeling in multilingual NLP systems
 
-- Handling of low-resource and mixed-language text
-
-- Explicit modeling of uncertainty
-
-- A research-first system design mindset
-
-It serves as a foundation for deeper multilingual NLP research rather than a finished application.
+A research-first approach suitable for deeper multilingual studies
 
 
 
-This imbalance highlights why neutral sentiment is often under-predicted by pretrained models.
 
+
+Uncertainty Handling: Confidence-based calibration, mapping low-confidence predictions to Neutral
+
+This setup isolates cross-lingual generalization effects from task-specific fine-tuning.
