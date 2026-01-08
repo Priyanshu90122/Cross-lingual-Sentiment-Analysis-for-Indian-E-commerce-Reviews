@@ -44,8 +44,8 @@ evaluation**.
 - **Model**: XLM-RoBERTa (pretrained multilingual transformer)
 - **Setup**: Zero-shot inference (no supervised fine-tuning)
 - **Inference**: Softmax probabilities over sentiment classes
-- **Uncertainty Handling**: Confidence-based calibration, where low-confidence
-  predictions are mapped to Neutral
+- **Uncertainty Handling**: Confidence-based calibration, mapping low-confidence
+  predictions to Neutral
 
 This setup isolates **cross-lingual generalization effects** from task-specific
 fine-tuning.
