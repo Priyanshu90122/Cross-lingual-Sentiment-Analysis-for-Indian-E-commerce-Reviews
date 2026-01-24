@@ -1,4 +1,4 @@
-# Cross-lingual Sentiment Analysis for Indian E-commerce Reviews
+# Cross-lingual Sentiment Analysis for Indian E-commerce Intelligence
 
 This project investigates zero-shot cross-lingual sentiment analysis for Indian
 e-commerce reviews using pretrained multilingual transformers. Indian user-generated
